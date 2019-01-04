@@ -218,6 +218,7 @@ button:disabled {
 
 .chat__messages {
     list-style-type: none;
+    line-height: 1.5;
     padding: 10px;
 }
 
@@ -237,6 +238,12 @@ button:disabled {
 
 .message__title span {
     color: #999;
+}
+
+.time {
+    float: right;
+    font-size: 10px;
+    color: grey;
 }
 
 @media (max-width: 600px) {

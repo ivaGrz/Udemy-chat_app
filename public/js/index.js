@@ -5,32 +5,51 @@ socket.on('connect', function() {
 
 socket.on('newMessage', function(message) {
     console.log('New Message: ', message);
-
     let li = $('<li></li>');
-    li.text(`${message.from}: ${message.text}`);
+    li.text(`${message.from}: `);
+
+    if (message.url) {
+        const a = $(
+            '<a target="_blank" ><i class="fas fa-map-marker-alt"></i></a>'
+        );
+        a.attr('href', message.url);
+        li.append(a);
+    } else if (message.text) {
+        const text = $('<span></span>');
+        text.text(message.text);
+        li.append(text);
+    }
+
+    let time = $('<span class="time" ></span>');
+    time.text(`${moment(message.createdAt).format('H:mm')}`);
+    li.append(time);
     $('#message-list').append(li);
 });
 
-socket.on('newLocationMessage', function(message) {
-    const li = $('<li></li>');
-    const a = $('<a target="_blank" >Location</a>');
-    a.attr('href', message.url);
-    li.text(`${message.from}: `);
-    li.append(a);
-    $('#message-list').append(li);
-});
+// socket.on('newLocationMessage', function(message) {
+//     const li = $('<li></li>');
+//     li.text(`${message.from}: `);
+
+//     const a = $('<a target="_blank" >Location</a>');
+//     a.attr('href', message.url);
+//     li.append(a);
+//     let time = $('<span class="time" ></span>');
+//     time.text(`${moment(message.createdAt).format('H:mm')}`);
+//     li.append(time);
+//     $('#message-list').append(li);
+// });
 
 socket.on('disconnect', function() {
     console.log('Disconnected from server');
 });
 
+let username = 'user';
+$('#username').on('change', function(e) {
+    username = $('#username').val();
+});
+
 $('#message-form').on('submit', function(e) {
     e.preventDefault();
-    let username = 'User';
-    if ($('#username').val()) {
-        username = $('#username').val();
-    }
-
     socket.emit(
         'createMessage',
         {
@@ -58,6 +77,7 @@ $('#send-location').on('click', function(e) {
                     .text('Send location');
 
                 socket.emit('createLocationMessage', {
+                    from: username,
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude
                 });

@@ -31,10 +31,10 @@ io.on('connection', socket => {
         callback();
     });
 
-    socket.on('createLocationMessage', coords => {
+    socket.on('createLocationMessage', data => {
         io.emit(
-            'newLocationMessage',
-            generateLocationMessage('User', coords.latitude, coords.longitude)
+            'newMessage',
+            generateLocationMessage(data.from, data.latitude, data.longitude)
         );
     });
 
