@@ -26,11 +26,15 @@ socket.on('disconnect', function() {
 
 $('#message-form').on('submit', function(e) {
     e.preventDefault();
+    let username = 'User';
+    if ($('#username').val()) {
+        username = $('#username').val();
+    }
 
     socket.emit(
         'createMessage',
         {
-            from: 'User',
+            from: username,
             text: $('#message').val()
         },
         function() {

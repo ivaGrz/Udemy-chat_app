@@ -7,6 +7,18 @@
     font-weight: 300;
     font-size: 0.95rem;
 }
+.username-container {
+    text-align: center;
+}
+
+#username {
+    font-size: 20px;
+    border: none;
+    margin: 0 auto;
+    font-style: italic;
+    color: #265f82;
+    font-weight: bold;
+}
 
 ul,
 li {
