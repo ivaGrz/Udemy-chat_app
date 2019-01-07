@@ -20,11 +20,6 @@
     font-weight: bold;
 }
 
-.chat-username {
-    font-weight: bold;
-    color: darkmagenta;
-}
-
 ul,
 li {
     list-style-position: inside;
@@ -245,10 +240,8 @@ button:disabled {
     color: #999;
 }
 
-.time {
-    float: right;
-    font-size: 10px;
-    color: grey;
+.fas {
+    color: darkred;
 }
 
 @media (max-width: 600px) {

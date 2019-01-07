@@ -33,7 +33,7 @@ io.on('connection', socket => {
 
     socket.on('createLocationMessage', data => {
         io.emit(
-            'newMessage',
+            'newLocationMessage',
             generateLocationMessage(data.from, data.latitude, data.longitude)
         );
     });

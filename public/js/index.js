@@ -4,45 +4,28 @@ socket.on('connect', function() {
 });
 
 socket.on('newMessage', function(message) {
-    console.log('New Message: ', message);
-    let li = $('<li></li>');
-    li.append(`<span class="chat-username">${message.from}</span> `);
+    const template = $('#message-template').html();
 
-    // if (message.from === $('#username').val()) {
-    //     console.log('color test');
-    //     li.attr('css', { color: 'red' });
-    // }
+    let html = Mustache.render(template, {
+        from: message.from,
+        text: message.text,
+        time: moment(message.createdAt).format('H:mm')
+    });
 
-    if (message.url) {
-        const a = $(
-            '<a target="_blank" ><i class="fas fa-map-marker-alt"></i></a>'
-        );
-        a.attr('href', message.url);
-        li.append(a);
-    } else if (message.text) {
-        const text = $('<span></span>');
-        text.text(message.text);
-        li.append(text);
-    }
-
-    let time = $('<span class="time" ></span>');
-    time.text(`${moment(message.createdAt).format('H:mm')}`);
-    li.append(time);
-    $('#message-list').append(li);
+    $('#message-list').append(html);
 });
 
-// socket.on('newLocationMessage', function(message) {
-//     const li = $('<li></li>');
-//     li.text(`${message.from}: `);
+socket.on('newLocationMessage', function(message) {
+    const template = $('#location-message-template').html();
 
-//     const a = $('<a target="_blank" >Location</a>');
-//     a.attr('href', message.url);
-//     li.append(a);
-//     let time = $('<span class="time" ></span>');
-//     time.text(`${moment(message.createdAt).format('H:mm')}`);
-//     li.append(time);
-//     $('#message-list').append(li);
-// });
+    let html = Mustache.render(template, {
+        from: message.from,
+        url: message.url,
+        time: moment(message.createdAt).format('H:mm')
+    });
+
+    $('#message-list').append(html);
+});
 
 socket.on('disconnect', function() {
     console.log('Disconnected from server');
