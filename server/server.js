@@ -47,6 +47,4 @@ io.on('connection', socket => {
     });
 });
 
-server.listen(port, () =>
-    console.log(`Example app listening on port ${port}!`)
-);
+server.listen(port, () => console.log(`Chat app listening on port ${port}!`));

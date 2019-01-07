@@ -6,7 +6,12 @@ socket.on('connect', function() {
 socket.on('newMessage', function(message) {
     console.log('New Message: ', message);
     let li = $('<li></li>');
-    li.text(`${message.from}: `);
+    li.append(`<span class="chat-username">${message.from}</span> `);
+
+    // if (message.from === $('#username').val()) {
+    //     console.log('color test');
+    //     li.attr('css', { color: 'red' });
+    // }
 
     if (message.url) {
         const a = $(
@@ -44,7 +49,7 @@ socket.on('disconnect', function() {
 });
 
 let username = 'user';
-$('#username').on('change', function(e) {
+let color = $('#username').on('change', function(e) {
     username = $('#username').val();
 });
 

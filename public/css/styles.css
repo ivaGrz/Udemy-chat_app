@@ -20,6 +20,11 @@
     font-weight: bold;
 }
 
+.chat-username {
+    font-weight: bold;
+    color: darkmagenta;
+}
+
 ul,
 li {
     list-style-position: inside;
