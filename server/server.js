@@ -49,9 +49,15 @@ io.on('connection', socket => {
     socket.on('createMessage', (message, callback) => {
         var user = users.getUser(socket.id);
         if (user && isRealString(message.text)) {
-            io.to(user.room).emit(
-                'newMessage',
-                generateMessage(user.name, message.text, user.color)
+            socket.broadcast
+                .to(user.room)
+                .emit(
+                    'newMessage',
+                    generateMessage(user.name, message.text, user.color)
+                );
+            socket.emit(
+                'meMessage',
+                generateMessage('me', message.text, user.color)
             );
         }
         callback();
@@ -60,10 +66,21 @@ io.on('connection', socket => {
     socket.on('createLocationMessage', data => {
         var user = users.getUser(socket.id);
         if (user) {
-            io.to(user.room).emit(
-                'newLocationMessage',
+            socket.broadcast
+                .to(user.room)
+                .emit(
+                    'newMessage',
+                    generateLocationMessage(
+                        user.name,
+                        data.latitude,
+                        data.longitude,
+                        user.color
+                    )
+                );
+            socket.emit(
+                'meMessage',
                 generateLocationMessage(
-                    user.name,
+                    'me',
                     data.latitude,
                     data.longitude,
                     user.color

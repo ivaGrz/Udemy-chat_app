@@ -48,12 +48,12 @@ socket.on('newMessage', function(message) {
     scrollToBottom();
 });
 
-socket.on('newLocationMessage', function(message) {
-    const template = $('#location-message-template').html();
+socket.on('meMessage', function(message) {
+    const template = $('#me-message-template').html();
 
     let html = Mustache.render(template, {
         from: message.from,
-        url: message.url,
+        text: message.text,
         time: moment(message.createdAt).format('H:mm'),
         color: message.color
     });
@@ -62,10 +62,23 @@ socket.on('newLocationMessage', function(message) {
     scrollToBottom();
 });
 
+// socket.on('newLocationMessage', function(message) {
+//     const template = $('#location-message-template').html();
+
+//     let html = Mustache.render(template, {
+//         from: message.from,
+//         url: message.url,
+//         time: moment(message.createdAt).format('H:mm'),
+//         color: message.color
+//     });
+
+//     $('#message-list').append(html);
+//     scrollToBottom();
+// });
+
 socket.on('updateUserList', function(users) {
     var ol = $('<ol></ol>');
     users.forEach(function(user) {
-        // console.log(user.name);
         ol.append($(`<li style="color:${user[1]}"></li>`).text(user[0]));
     });
     $('#users').html(ol);

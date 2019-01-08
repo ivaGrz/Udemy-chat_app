@@ -3,7 +3,7 @@ const moment = require('moment');
 const generateMessage = (from, text, color) => {
     return {
         from,
-        text,
+        text: `<p>${text}</p>`,
         color,
         createdAt: moment().valueOf()
     };
@@ -11,9 +11,12 @@ const generateMessage = (from, text, color) => {
 
 const generateLocationMessage = (from, lat, lon, color) => {
     let url = `https://maps.google.com/?q=${lat},${lon}`;
+    let text = `<a href="${url}" target="_blank">
+            <i class="fas fa-map-marker-alt" />
+        </a>`;
     return {
         from,
-        url,
+        text,
         color,
         createdAt: moment().valueOf()
     };
