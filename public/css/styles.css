@@ -227,18 +227,24 @@ button:disabled {
     padding: 10px;
 }
 
-.message {
+.msg-box {
+    width: 100%;
     display: inline-block;
+    height: 80px;
+}
+.message {
     padding: 10px;
-    border-radius: 20px;
-    width: 70%;
     margin: 5px;
 }
 
 .me {
+    display: inline-block;
     background-color: rgba(200, 200, 200, 0.2);
+    border-radius: 20px;
+    padding: 10px;
     text-align: right;
     float: right;
+    text-align: right;
 }
 
 .message__body p {
@@ -247,7 +253,7 @@ button:disabled {
 
 .message__title {
     display: inline-block;
-    width: 100px;
+    /* width: 100px; */
     margin-bottom: 5px;
 }
 
@@ -257,6 +263,12 @@ button:disabled {
 
 .message__title span {
     color: #999;
+}
+
+.admin-msg {
+    font-size: 0.9rem;
+    color: grey;
+    text-align: center;
 }
 
 .fas {

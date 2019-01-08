@@ -32,17 +32,13 @@ io.on('connection', socket => {
             users.getUserList(params.room)
         );
 
-        socket.emit(
-            'newMessage',
-            generateMessage('Admin', 'Welcome to the chat app')
-        );
+        socket.emit('adminMessage', 'Welcome to the chat app');
+
+        // io.emit('generated notification', 'New message');
 
         socket.broadcast
             .to(params.room)
-            .emit(
-                'newMessage',
-                generateMessage('Admin', `${params.name} has joined.`)
-            );
+            .emit('adminMessage', `${params.name} has joined.`);
         callback();
     });
 
@@ -55,6 +51,7 @@ io.on('connection', socket => {
                     'newMessage',
                     generateMessage(user.name, message.text, user.color)
                 );
+
             socket.emit(
                 'meMessage',
                 generateMessage('me', message.text, user.color)
@@ -94,10 +91,7 @@ io.on('connection', socket => {
         const user = users.removeUser(socket.id);
         io.to(user.room).emit('updateUserList', users.getUserList(user.room));
 
-        io.to(user.room).emit(
-            'newMessage',
-            generateMessage('Admin', `${user.name} left the chat.`)
-        );
+        io.to(user.room).emit('adminMessage', `${user.name} left the chat.`);
     });
 });
 

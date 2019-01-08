@@ -44,26 +44,32 @@
         </div>
 
         <script id="message-template" type="text/template">
-            <li class="message">
-                <div class="message__title">
-                    <span class="username" style="color: {{ color }}">{{ from }}</span>
-                    <span>{{ time }}</span>
-                </div>
-                <div class="message__body">
-                    {{{ text }}}
+            <li class="msg-box">
+                <div class="message">
+                    <div class="message__title">
+                        <span class="username" style="color: {{ color }}">{{ from }}</span>
+                        <span>{{ time }}</span>
+                    </div>
+                    <div class="message__body">
+                        <p>{{{ text }}}</p>
+                    </div>
                 </div>
             </li>
         </script>
 
         <script id="me-message-template" type="text/template">
-            <li class="message me">
-                <div class="message__title">
-                    <span  class="username" style="color: {{ color }}">{{ from }}</span>
-                    <span>{{ time }}</span>
+            <li class="msg-box">
+                <div class="message me">
+
+                    <div class="message__title">
+                        <span  class="username" style="color: {{ color }}">{{ from }}</span>
+                        <span>{{ time }}</span>
+                    </div>
+                    <div class="message__body">
+                        <p>{{{ text }}}</p>
+                    </div>
                 </div>
-                <div class="message__body">
-                    <p>{{{ text }}}</p>
-                </div>
+
             </li>
         </script>
 

@@ -3,7 +3,7 @@ const moment = require('moment');
 const generateMessage = (from, text, color) => {
     return {
         from,
-        text: `<p>${text}</p>`,
+        text,
         color,
         createdAt: moment().valueOf()
     };

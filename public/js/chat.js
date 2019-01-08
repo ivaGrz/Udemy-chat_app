@@ -34,6 +34,12 @@ socket.on('connect', function() {
     });
 });
 
+socket.on('adminMessage', function(message) {
+    let adminMsg = $('<h5 class="admin-msg"></h5>');
+    adminMsg.text(message);
+    $('#message-list').append(adminMsg);
+});
+
 socket.on('newMessage', function(message) {
     const template = $('#message-template').html();
 
@@ -46,7 +52,13 @@ socket.on('newMessage', function(message) {
 
     $('#message-list').append(html);
     scrollToBottom();
+    var notification = new Notification(`${message.from}: ${message.text}`);
 });
+
+// socket.on('generated notification', notificationString => {
+//     // show the notification
+//     var notification = new Notification(notificationString);
+// });
 
 socket.on('meMessage', function(message) {
     const template = $('#me-message-template').html();
