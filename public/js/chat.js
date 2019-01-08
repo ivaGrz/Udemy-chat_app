@@ -1,5 +1,4 @@
 var socket = io();
-let username;
 
 function scrollToBottom() {
     // selectors
@@ -25,13 +24,12 @@ function scrollToBottom() {
 socket.on('connect', function() {
     // console.log('Connected to server');
     const params = jQuery.deparam(window.location.search);
+    $('#room-name').text(params.room);
     socket.emit('join', params, function(err) {
         if (err) {
             alert(err);
             window.location.href = '/';
         } else {
-            username = params.name;
-            console.log('Welcome ' + username);
         }
     });
 });
@@ -42,7 +40,8 @@ socket.on('newMessage', function(message) {
     let html = Mustache.render(template, {
         from: message.from,
         text: message.text,
-        time: moment(message.createdAt).format('H:mm')
+        time: moment(message.createdAt).format('H:mm'),
+        color: message.color
     });
 
     $('#message-list').append(html);
@@ -55,7 +54,8 @@ socket.on('newLocationMessage', function(message) {
     let html = Mustache.render(template, {
         from: message.from,
         url: message.url,
-        time: moment(message.createdAt).format('H:mm')
+        time: moment(message.createdAt).format('H:mm'),
+        color: message.color
     });
 
     $('#message-list').append(html);
@@ -65,7 +65,8 @@ socket.on('newLocationMessage', function(message) {
 socket.on('updateUserList', function(users) {
     var ol = $('<ol></ol>');
     users.forEach(function(user) {
-        ol.append($('<li></li>').text(user));
+        // console.log(user.name);
+        ol.append($(`<li style="color:${user[1]}"></li>`).text(user[0]));
     });
     $('#users').html(ol);
 });
@@ -79,8 +80,8 @@ $('#message-form').on('submit', function(e) {
     socket.emit(
         'createMessage',
         {
-            from: username,
-            text: $('#message').val()
+            text: $('#message').val(),
+            id: socket.id
         },
         function() {
             $('#message').val('');
@@ -103,7 +104,6 @@ $('#send-location').on('click', function(e) {
                     .text('Send location');
 
                 socket.emit('createLocationMessage', {
-                    from: username,
                     latitude: position.coords.latitude,
                     longitude: position.coords.longitude
                 });

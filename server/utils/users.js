@@ -1,18 +1,10 @@
-///addUser(id, name, room)
-
-//removeUser(id)
-
-//getUser(id)
-
-//getUserList(room)
-
 class Users {
     constructor() {
         this.users = [];
     }
 
     addUser(id, name, room) {
-        const user = { id, name, room };
+        const user = { id, name, room, color: this.colorGen() };
         this.users.push(user);
         return user;
     }
@@ -37,8 +29,16 @@ class Users {
 
     getUserList(room) {
         const users = this.users.filter(user => user.room === room);
-        const names = users.map(user => user.name);
+        const names = users.map(user => [user.name, user.color]);
         return names;
+    }
+
+    colorGen() {
+        const r = Math.floor(Math.random() * 256);
+        const g = Math.floor(Math.random() * 256);
+        const b = Math.floor(Math.random() * 256);
+        let color = 'rgb(' + r + ',' + g + ',' + b + ')';
+        return color;
     }
 }
 
