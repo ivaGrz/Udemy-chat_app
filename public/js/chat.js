@@ -1,4 +1,5 @@
 var socket = io();
+let username;
 
 function scrollToBottom() {
     // selectors
@@ -22,7 +23,17 @@ function scrollToBottom() {
 }
 
 socket.on('connect', function() {
-    console.log('Connected to server');
+    // console.log('Connected to server');
+    const params = jQuery.deparam(window.location.search);
+    socket.emit('join', params, function(err) {
+        if (err) {
+            alert(err);
+            window.location.href = '/';
+        } else {
+            username = params.name;
+            console.log('Welcome ' + username);
+        }
+    });
 });
 
 socket.on('newMessage', function(message) {
@@ -51,13 +62,16 @@ socket.on('newLocationMessage', function(message) {
     scrollToBottom();
 });
 
-socket.on('disconnect', function() {
-    console.log('Disconnected from server');
+socket.on('updateUserList', function(users) {
+    var ol = $('<ol></ol>');
+    users.forEach(function(user) {
+        ol.append($('<li></li>').text(user));
+    });
+    $('#users').html(ol);
 });
 
-let username = 'user';
-let color = $('#username').on('change', function(e) {
-    username = $('#username').val();
+socket.on('disconnect', function() {
+    console.log('Disconnected from server');
 });
 
 $('#message-form').on('submit', function(e) {

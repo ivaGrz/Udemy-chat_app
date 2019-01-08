@@ -168,7 +168,7 @@ button:disabled {
     text-align: left;
 }
 
-.chat__sidebar ul {
+.chat__sidebar ol {
     list-style-type: none;
 }
 
