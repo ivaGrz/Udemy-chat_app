@@ -2,26 +2,6 @@ var socket = io();
 mapboxgl.accessToken =
     'pk.eyJ1IjoiaXZhZ3J6IiwiYSI6ImNqazE1bTg3aTBjdXAzanM0emRkcXd2YW4ifQ.7iVkqAmMK6tK_qDZaeERBQ';
 
-function scrollToBottom() {
-    // selectors
-    const messages = jQuery('#message-list');
-    const newMessage = messages.children('li:last-child');
-
-    //heights
-    let clientHeight = messages.prop('clientHeight');
-    let scrollTop = messages.prop('scrollTop');
-    let scrollHeight = messages.prop('scrollHeight');
-    let newMessageHeight = newMessage.innerHeight();
-    var lastMessageHeight = newMessage.prev().innerHeight();
-
-    if (
-        clientHeight + scrollTop + newMessageHeight + lastMessageHeight >=
-        scrollHeight
-    ) {
-        messages.scrollTop(scrollHeight);
-    }
-}
-
 socket.on('connect', function() {
     // console.log('Connected to server');
     const params = jQuery.deparam(window.location.search);
@@ -187,4 +167,24 @@ function renderMap(mapId, lng, lat) {
     el.className = 'marker';
 
     new mapboxgl.Marker(el).setLngLat([lng, lat]).addTo(map);
+}
+
+function scrollToBottom() {
+    // selectors
+    const messages = jQuery('#message-list');
+    const newMessage = messages.children('li:last-child');
+
+    //heights
+    let clientHeight = messages.prop('clientHeight');
+    let scrollTop = messages.prop('scrollTop');
+    let scrollHeight = messages.prop('scrollHeight');
+    let newMessageHeight = newMessage.innerHeight();
+    var lastMessageHeight = newMessage.prev().innerHeight();
+
+    if (
+        clientHeight + scrollTop + newMessageHeight + lastMessageHeight >=
+        scrollHeight
+    ) {
+        messages.scrollTop(scrollHeight);
+    }
 }

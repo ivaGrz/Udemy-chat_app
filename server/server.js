@@ -14,10 +14,7 @@ const app = express();
 const server = http.Server(app);
 
 // var server = http.createServer(app);
-var io = socketIO(server, {
-    pingInterval: 15000,
-    pingTimeout: 30000
-});
+var io = socketIO(server);
 var users = new Users();
 
 app.use(express.static(publicPath));
