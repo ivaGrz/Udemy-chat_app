@@ -82,7 +82,9 @@ socket.on('meMessage', function(message) {
     });
     $('#message-list').append(html);
     scrollToBottom();
-    renderMap(message.id, message.lon, message.lat);
+    if (message.location) {
+        renderMap(message.id, message.lon, message.lat);
+    }
 });
 
 // socket.on('newLocationMessage', function(message) {

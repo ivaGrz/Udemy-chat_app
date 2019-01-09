@@ -26,12 +26,13 @@ io.on('connection', socket => {
     console.log('New user connected');
 
     socket.on('join', (params, callback) => {
+        console.log('join');
+
         const name = escape(params.name);
         const room = escape(params.room);
         if (!isRealString(name) || !isRealString(room)) {
             return callback('Name and room are required.');
         }
-
         socket.join(room);
         users.removeUser(socket.id);
         users.addUser(socket.id, name, room);
@@ -40,13 +41,13 @@ io.on('connection', socket => {
 
         socket.emit('adminMessage', 'Welcome to the chat app');
 
-        // io.emit('generated notification', 'New message');
-
         socket.broadcast.to(room).emit('adminMessage', `${name} has joined.`);
         callback();
     });
 
     socket.on('createMessage', (message, callback) => {
+        console.log('createMessage');
+
         var user = users.getUser(socket.id);
         const messageText = escape(message.text);
         if (user && isRealString(messageText)) {
@@ -66,8 +67,10 @@ io.on('connection', socket => {
     });
 
     socket.on('createLocationMessage', data => {
+        console.log('createLocationMessage');
         var user = users.getUser(socket.id);
         if (user) {
+            console.log('userFound');
             socket.broadcast
                 .to(user.room)
                 .emit(
