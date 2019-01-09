@@ -2,6 +2,7 @@ const path = require('path');
 const http = require('http');
 const express = require('express');
 const socketIO = require('socket.io');
+const escape = require('escape-html');
 
 const { generateMessage, generateLocationMessage } = require('./utils/message');
 const { isRealString } = require('./utils/validation');
@@ -10,7 +11,9 @@ const { Users } = require('./utils/users');
 const port = process.env.PORT || 3000;
 const publicPath = path.join(__dirname, '../public');
 const app = express();
-var server = http.createServer(app);
+const server = http.Server(app);
+
+// var server = http.createServer(app);
 var io = socketIO(server);
 var users = new Users();
 
@@ -20,41 +23,40 @@ io.on('connection', socket => {
     console.log('New user connected');
 
     socket.on('join', (params, callback) => {
-        if (!isRealString(params.name) || !isRealString(params.room)) {
+        const name = escape(params.name);
+        const room = escape(params.room);
+        if (!isRealString(name) || !isRealString(room)) {
             return callback('Name and room are required.');
         }
-        socket.join(params.room);
-        users.removeUser(socket.id);
-        users.addUser(socket.id, params.name, params.room);
 
-        io.to(params.room).emit(
-            'updateUserList',
-            users.getUserList(params.room)
-        );
+        socket.join(room);
+        users.removeUser(socket.id);
+        users.addUser(socket.id, name, room);
+
+        io.to(room).emit('updateUserList', users.getUserList(room));
 
         socket.emit('adminMessage', 'Welcome to the chat app');
 
         // io.emit('generated notification', 'New message');
 
-        socket.broadcast
-            .to(params.room)
-            .emit('adminMessage', `${params.name} has joined.`);
+        socket.broadcast.to(room).emit('adminMessage', `${name} has joined.`);
         callback();
     });
 
     socket.on('createMessage', (message, callback) => {
         var user = users.getUser(socket.id);
-        if (user && isRealString(message.text)) {
+        const messageText = escape(message.text);
+        if (user && isRealString(messageText)) {
             socket.broadcast
                 .to(user.room)
                 .emit(
                     'newMessage',
-                    generateMessage(user.name, message.text, user.color)
+                    generateMessage(user.name, messageText, user.color)
                 );
 
             socket.emit(
                 'meMessage',
-                generateMessage('me', message.text, user.color)
+                generateMessage('me', messageText, user.color)
             );
         }
         callback();

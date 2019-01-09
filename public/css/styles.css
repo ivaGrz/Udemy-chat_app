@@ -57,6 +57,11 @@ button:disabled {
     background: #698ea5;
 }
 
+small {
+    font-size: 0.8rem;
+    font-style: italic;
+}
+
 .centered-form {
     display: flex;
     align-items: center;

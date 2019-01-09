@@ -52,13 +52,9 @@ socket.on('newMessage', function(message) {
 
     $('#message-list').append(html);
     scrollToBottom();
-    var notification = new Notification(`${message.from}: ${message.text}`);
+    notifyMe(`${message.from}: ${message.text}`);
+    // var notification = new Notification(`${message.from}: ${message.text}`);
 });
-
-// socket.on('generated notification', notificationString => {
-//     // show the notification
-//     var notification = new Notification(notificationString);
-// });
 
 socket.on('meMessage', function(message) {
     const template = $('#me-message-template').html();
@@ -144,3 +140,17 @@ $('#send-location').on('click', function(e) {
         return alert('Geolocation is not supported by your browser.');
     }
 });
+
+function notifyMe(message) {
+    if (!('Notification' in window)) {
+        alert('This browser does not support desktop notification');
+    } else if (Notification.permission === 'granted') {
+        var notification = new Notification(message);
+    } else if (Notification.permission !== 'denied') {
+        Notification.requestPermission().then(function(permission) {
+            if (permission === 'granted') {
+                var notification = new Notification(message);
+            }
+        });
+    }
+}

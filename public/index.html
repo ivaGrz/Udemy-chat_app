@@ -17,10 +17,25 @@
                 <div class="form-field"><h3>Join a Chat</h3></div>
                 <div class="form-field">
                     <label>Display name</label>
-                    <input type="text" name="name" autofocus />
+                    <input
+                        type="text"
+                        name="name"
+                        autofocus
+                        pattern="[A-Za-z0-9]+"
+                        maxlength="12"
+                        required
+                    />
                 </div>
                 <div class="form-field">
-                    <label>Room name</label> <input type="text" name="room" />
+                    <label>Room name</label>
+                    <input
+                        type="text"
+                        name="room"
+                        pattern="[A-Za-z0-9]+"
+                        maxlength="12"
+                        required
+                    />
+                    <small>letters and numbers only, 12 characters max</small>
                 </div>
                 <div class="form-field"><button>Join</button></div>
             </form>
