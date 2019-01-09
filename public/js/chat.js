@@ -45,7 +45,7 @@ socket.on('newMessage', function(message) {
     const template = $('#message-template').html();
     let data;
     if (message.location) {
-        data = `<div id="${message.id}" style="width: 100px; height: 100px;"/>`;
+        data = `<div id="${message.id}" style="width: 200px; height: 200px;"/>`;
         notifyMe(message.from, 'Location');
     } else {
         data = message.text;
@@ -68,10 +68,8 @@ socket.on('meMessage', function(message) {
     let data;
     if (message.location) {
         data = `<div id="${message.id}" style="width: 100px; height: 100px;"/>`;
-        notifyMe(message.from, 'Location');
     } else {
         data = message.text;
-        notifyMe(message.from, message.text);
     }
 
     let html = Mustache.render(template, {
