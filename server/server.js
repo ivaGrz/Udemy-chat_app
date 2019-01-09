@@ -12,10 +12,12 @@ const port = process.env.PORT || 3000;
 const publicPath = path.join(__dirname, '../public');
 const app = express();
 const server = http.Server(app);
-socket.set('origins', '*');
 
 // var server = http.createServer(app);
-var io = socketIO(server);
+var io = socketIO(server, {
+    pingInterval: 15000,
+    pingTimeout: 30000
+});
 var users = new Users();
 
 app.use(express.static(publicPath));

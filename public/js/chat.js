@@ -1,6 +1,4 @@
-var socket = io({
-    transports: ['websocket']
-});
+var socket = io();
 
 function scrollToBottom() {
     // selectors
