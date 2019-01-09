@@ -34,10 +34,10 @@ class Users {
     }
 
     colorGen() {
-        const r = Math.floor(Math.random() * 256);
-        const g = Math.floor(Math.random() * 256);
-        const b = Math.floor(Math.random() * 256);
-        let color = 'rgb(' + r + ',' + g + ',' + b + ')';
+        const h = Math.floor(Math.random() * 300);
+        const s = Math.floor(Math.random() * 70) + 30 + '%';
+        const l = '50%';
+        let color = 'hsl(' + h + ',' + s + ',' + l + ')';
         return color;
     }
 }

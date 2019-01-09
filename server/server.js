@@ -12,6 +12,7 @@ const port = process.env.PORT || 3000;
 const publicPath = path.join(__dirname, '../public');
 const app = express();
 const server = http.Server(app);
+socket.set('origins', '*');
 
 // var server = http.createServer(app);
 var io = socketIO(server);
