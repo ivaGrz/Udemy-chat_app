@@ -1,4 +1,6 @@
 var socket = io();
+mapboxgl.accessToken =
+    'pk.eyJ1IjoiaXZhZ3J6IiwiYSI6ImNqazE1bTg3aTBjdXAzanM0emRkcXd2YW4ifQ.7iVkqAmMK6tK_qDZaeERBQ';
 
 function scrollToBottom() {
     // selectors
@@ -17,7 +19,6 @@ function scrollToBottom() {
         scrollHeight
     ) {
         messages.scrollTop(scrollHeight);
-        console.log('should scroll');
     }
 }
 
@@ -42,32 +43,46 @@ socket.on('adminMessage', function(message) {
 
 socket.on('newMessage', function(message) {
     const template = $('#message-template').html();
+    let data;
+    if (message.location) {
+        data = `<div id="${message.id}" style="width: 100px; height: 100px;"/>`;
+        notifyMe(message.from, 'Location');
+    } else {
+        data = message.text;
+        notifyMe(message.from, message.text);
+    }
 
     let html = Mustache.render(template, {
         from: message.from,
-        text: message.text,
+        text: data,
         time: moment(message.createdAt).format('H:mm'),
         color: message.color
     });
-
     $('#message-list').append(html);
+    renderMap(message.id, message.lon, message.lat);
     scrollToBottom();
-    notifyMe(`${message.from}: ${message.text}`);
-    // var notification = new Notification(`${message.from}: ${message.text}`);
 });
 
 socket.on('meMessage', function(message) {
     const template = $('#me-message-template').html();
+    let data;
+    if (message.location) {
+        data = `<div id="${message.id}" style="width: 100px; height: 100px;"/>`;
+        notifyMe(message.from, 'Location');
+    } else {
+        data = message.text;
+        notifyMe(message.from, message.text);
+    }
 
     let html = Mustache.render(template, {
         from: message.from,
-        text: message.text,
+        text: data,
         time: moment(message.createdAt).format('H:mm'),
         color: message.color
     });
-
     $('#message-list').append(html);
     scrollToBottom();
+    renderMap(message.id, message.lon, message.lat);
 });
 
 // socket.on('newLocationMessage', function(message) {
@@ -141,16 +156,35 @@ $('#send-location').on('click', function(e) {
     }
 });
 
-function notifyMe(message) {
+function notifyMe(from, content) {
     if (!('Notification' in window)) {
         alert('This browser does not support desktop notification');
     } else if (Notification.permission === 'granted') {
-        var notification = new Notification(message);
+        var notification = new Notification(from, {
+            icon: '...',
+            body: content
+        });
     } else if (Notification.permission !== 'denied') {
         Notification.requestPermission().then(function(permission) {
             if (permission === 'granted') {
-                var notification = new Notification(message);
+                var notification = new Notification(from, {
+                    icon: '...',
+                    body: content
+                });
             }
         });
     }
+}
+
+function renderMap(mapId, lng, lat) {
+    let map = new mapboxgl.Map({
+        container: mapId,
+        style: 'mapbox://styles/mapbox/streets-v9',
+        center: [lng, lat],
+        zoom: 13
+    });
+    var el = document.createElement('div');
+    el.className = 'marker';
+
+    new mapboxgl.Marker(el).setLngLat([lng, lat]).addTo(map);
 }

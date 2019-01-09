@@ -10,15 +10,21 @@ const generateMessage = (from, text, color) => {
 };
 
 const generateLocationMessage = (from, lat, lon, color) => {
-    let url = `https://maps.google.com/?q=${lat},${lon}`;
-    let text = `<a href="${url}" target="_blank">
-            <i class="fas fa-map-marker-alt" />
-        </a>`;
+    //     let url = `https://maps.google.com/?q=${lat},${lon}`;
+
+    //     var img_url = `https://maps.googleapis.com/maps/api/staticmap?center=
+    //   ${lat}${lon}&zoom=14&size=400x300&sensor=false`;
+    //     let text = `<img src=${img_url}/>`;
+
     return {
+        id: 'map-' + Math.floor(Math.random() * 10000),
         from,
-        text,
+        // text,
+        lon,
+        lat,
         color,
-        createdAt: moment().valueOf()
+        createdAt: moment().valueOf(),
+        location: true
     };
 };
 

@@ -235,7 +235,7 @@ small {
 .msg-box {
     width: 100%;
     display: inline-block;
-    height: 80px;
+    min-height: 80px;
 }
 .message {
     padding: 10px;
@@ -247,9 +247,7 @@ small {
     background-color: rgba(200, 200, 200, 0.2);
     border-radius: 20px;
     padding: 10px;
-    text-align: right;
     float: right;
-    text-align: right;
 }
 
 .message__body p {
@@ -278,6 +276,18 @@ small {
 
 .fas {
     color: darkred;
+}
+
+.marker {
+    display: block;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 0;
+    width: 15px;
+    height: 15px;
+    background-color: darkred;
+    opacity: 0.7;
 }
 
 @media (max-width: 600px) {
